@@ -427,6 +427,53 @@ assert(indexHtml.includes('min="200"'), 'Speed slider must have min="200"');
 assert(indexHtml.includes('max="3000"'), 'Speed slider must have max="3000" (3 seconds)');
 console.log('  [PASS] Speed slider min="200" and max="3000" (3s) verified');
 
+// 10. Dotplot overlay: native checkbox semantics and icon-only collapsed layout.
+console.log('\n--- Section 10: Dotplot Overlay Toggle Invariants ---');
+const overlayControl = indexHtml.match(/<label class="dotplot-overlay-control"[\s\S]*?<\/label>/)?.[0];
+assert(overlayControl, 'Overlay must use a semantic clickable label, not an overflowing search-box');
+assert(/for="dotplotOverlayToggle"/.test(overlayControl), 'Overlay label must target the existing checkbox');
+const overlayInput = overlayControl.match(/<input\b[^>]*>/)?.[0];
+assert(overlayInput && /type="checkbox"/.test(overlayInput) && /id="dotplotOverlayToggle"/.test(overlayInput),
+  'Overlay must retain the native checkbox and existing binding ID');
+assert(/\bchecked\b/.test(overlayInput), 'Overlay must remain checked by default');
+assert(/aria-label="Superponer camino óptimo"/.test(overlayInput),
+  'Checkbox must have a stable Spanish accessible name when visible text is hidden');
+assert(!/disabled|tabindex="-1"|aria-hidden/.test(overlayInput), 'Checkbox must remain keyboard accessible');
+assert(/class="bx bx-git-branch icon" aria-hidden="true"/.test(overlayControl),
+  'Overlay must include a decorative representative path icon');
+assert(overlayControl.includes('class="dotplot-overlay-text">Superponer camino óptimo</span>'),
+  'Expanded overlay must retain the existing Spanish text');
+assert(!overlayControl.includes('style='), 'Overlay geometry must be defined in scoped CSS');
+
+function overlayCssRule(selector) {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const rule = styleCss.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
+  assert(rule, `Missing overlay rule: ${selector}`);
+  return rule[1];
+}
+const overlayLayout = overlayCssRule('.sidebar .dotplot-overlay-control');
+assert(/position:\s*relative;/.test(overlayLayout) && /width:\s*100%;/.test(overlayLayout),
+  'Overlay label must contain its checkbox and fit the sidebar width');
+assert(/min-width:\s*0;/.test(overlayLayout), 'Overlay must be able to shrink in the collapsed sidebar');
+assert(/display:\s*none;/.test(overlayCssRule('.sidebar.close .dotplot-overlay-text')),
+  'Collapsed overlay text must not occupy space or overflow');
+const collapsedInput = overlayCssRule('.sidebar.close .dotplot-overlay-control input');
+assert(/position:\s*absolute;/.test(collapsedInput) && /inset:\s*0;/.test(collapsedInput) &&
+       /opacity:\s*0;/.test(collapsedInput) && /width:\s*100%;/.test(collapsedInput) &&
+       /height:\s*100%;/.test(collapsedInput),
+  'Collapsed checkbox must be visually hidden while covering the icon hit target');
+assert(!/pointer-events:\s*none|display:\s*none|visibility:\s*hidden/.test(collapsedInput),
+  'Collapsed checkbox must remain interactive');
+const overlayIcon = overlayCssRule('.sidebar .dotplot-overlay-content .icon');
+assert(/min-width:\s*0;/.test(overlayIcon), 'Overlay icon must override the shared 52px minimum to avoid overflow');
+assert(/background-color:/.test(overlayCssRule('.sidebar .dotplot-overlay-control input:checked + .dotplot-overlay-content')),
+  'Checked overlay must have a visible state independent of the hidden checkbox');
+assert(/outline:\s*2px solid/.test(overlayCssRule('.sidebar .dotplot-overlay-control input:focus-visible + .dotplot-overlay-content')),
+  'Keyboard focus must be visible on the icon content');
+assert(mainJs.includes("dotplotOverlayToggle.addEventListener('change'"),
+  'Existing native checkbox change binding must remain intact');
+console.log('  [PASS] Overlay semantic label, stable name, collapsed containment, checked and focus styles verified');
+
 console.log('\nAll UI Redesign, Sidebar Form Controls, and Spanish Normalization invariants validated successfully!');
 
 

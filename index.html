@@ -167,10 +167,13 @@
 
           <div class="sidebar-field-group">
             <label class="sidebar-label" for="dotplotOverlayToggle">Superposición de Alineamiento</label>
-            <li class="search-box" style="padding: 0 14px; display: flex; align-items: center; gap: 10px;">
-              <input type="checkbox" id="dotplotOverlayToggle" checked style="width: 18px; height: 18px; cursor: pointer;">
-              <label for="dotplotOverlayToggle" style="font-size: 13px; color: #475569; cursor: pointer;">Superponer camino óptimo</label>
-            </li>
+            <label class="dotplot-overlay-control" for="dotplotOverlayToggle" title="Superponer camino óptimo">
+              <input type="checkbox" id="dotplotOverlayToggle" checked aria-label="Superponer camino óptimo">
+              <span class="dotplot-overlay-content">
+                <i class="bx bx-git-branch icon" aria-hidden="true"></i>
+                <span class="dotplot-overlay-text">Superponer camino óptimo</span>
+              </span>
+            </label>
           </div>
         </div>
 

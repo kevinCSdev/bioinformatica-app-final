@@ -255,7 +255,7 @@
         <p>Programación Dinámica Interactiva: Needleman-Wunsch, Smith-Waterman, Wagner-Fischer y LCS</p>
       </div>
       <div class="badge-group">
-        <span class="badge-tag primary" id="active-algo-badge"><i class='bx bx-chip'></i> Needleman-Wunsch</span>
+        <button type="button" class="badge-tag primary protein-catalog-opener" id="protein-catalog-button" aria-haspopup="dialog" aria-controls="protein-catalog-dialog">Catálogo de aminoácidos</button>
         <span class="badge-tag secondary" id="playback-status">Inicializado</span>
       </div>
     </div>
@@ -313,6 +313,18 @@
       </div>
     </div>
   </section>
+
+  <dialog id="protein-catalog-dialog" class="protein-catalog-dialog" aria-labelledby="protein-catalog-title">
+    <div class="protein-catalog-header">
+      <h2 id="protein-catalog-title">Catálogo de aminoácidos</h2>
+      <button type="button" id="protein-catalog-close" class="protein-catalog-close">Cerrar</button>
+    </div>
+    <label for="protein-catalog-search">Buscar por letra, código, nombre o categoría</label>
+    <input type="search" id="protein-catalog-search" autocomplete="off" spellcheck="false" autofocus>
+    <p id="protein-catalog-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <p id="protein-catalog-empty" hidden>No se encontraron aminoácidos. Prueba otra búsqueda.</p>
+    <ul id="protein-catalog-results" class="protein-catalog-results" aria-label="Aminoácidos"></ul>
+  </dialog>
 
   <!-- Controlador principal ES6 -->
   <script type="module" src="./js/main.js"></script>

@@ -16,6 +16,14 @@ abriendo `index.html` con doble clic):
 
 Abrir http://localhost:8000
 
+## Catálogo de aminoácidos
+
+Pulsa **Catálogo de aminoácidos** en el encabezado para consultar los 20
+aminoácidos estándar, en cualquier tipo de secuencia. Busca por letra, código,
+nombre o categoría, sin distinguir mayúsculas ni acentos. Usa **Cerrar** o
+**Escape** para volver al botón; cada apertura reinicia la búsqueda.
+El catálogo es de solo lectura y no cambia el alineamiento.
+
 ## Pruebas
 
 Requieren Node.js 18 o superior:

@@ -7,6 +7,7 @@ import { validarEntrada, TipoSecuencia } from './core/Validacion.js';
 import { exportarCSV, exportarPNG } from './ui/Exportador.js';
 import { DotplotEngine } from './core/DotplotEngine.js';
 import { DotplotView } from './ui/DotplotView.js';
+import { ProteinCatalog } from './ui/ProteinCatalog.js';
 
 /**
  * Inicialización principal de la aplicación y conexión con el DOM
@@ -62,7 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const speedSlider = document.getElementById('speed-slider');
   const speedLabel = document.getElementById('speed-label');
   const playbackStatus = document.getElementById('playback-status');
-  const activeAlgoBadge = document.getElementById('active-algo-badge');
+  const catalogDialog = document.getElementById('protein-catalog-dialog');
+  new ProteinCatalog({
+    opener: document.getElementById('protein-catalog-button'),
+    dialog: catalogDialog,
+    search: document.getElementById('protein-catalog-search'),
+    closeButton: document.getElementById('protein-catalog-close'),
+    results: document.getElementById('protein-catalog-results'),
+    status: document.getElementById('protein-catalog-status'),
+    empty: document.getElementById('protein-catalog-empty')
+  });
   const exampleSelect = document.getElementById('example-select');
 
   // Instanciar los componentes principales
@@ -289,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Suscripción reactiva a eventos de AppState
   appState.subscribe((state, eventType, payload) => {
     playbackStatus.textContent = state.status;
-    activeAlgoBadge.innerHTML = `<i class='bx bx-chip'></i> ${algoDisplayNames[state.algorithm] || state.algorithm}`;
 
     if (eventType === 'INIT') {
       renderer.mount(payload.rows, payload.cols, payload.seq1, payload.seq2);
@@ -600,7 +609,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Atajos de teclado (Espacio: auto-ejecutar, Flecha Derecha: siguiente, Flecha Izquierda: anterior)
   window.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (catalogDialog.open) return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
     if (activeView === 'dotplot' || !entradaValida) return;
     if (e.code === 'Space') {
       e.preventDefault();

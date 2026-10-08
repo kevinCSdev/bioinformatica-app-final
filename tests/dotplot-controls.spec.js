@@ -121,6 +121,7 @@ try {
   vm.runInNewContext(source, {
     document, window, console,
     AppState: ObservedState, D3Renderer: presentation, MathPanel: presentation, SummaryPanel: presentation,
+    ProteinCatalog: presentation,
     AlgorithmType, DefaultScoring, SubstitutionType, validarEntrada, TipoSecuencia, DotplotEngine,
     DotplotView: { render() { renders++; }, exportToPng() { pngExports++; } },
     exportarCSV() { csvExports++; }, exportarPNG() { pngExports++; }
@@ -176,6 +177,17 @@ try {
   before = snapshot();
   window.dispatch('keydown', { code: 'ArrowRight' });
   assert.equal(calls.stepForward, before.stepForward + 1, 'Matrix shortcut restored');
+
+  get('protein-catalog-dialog').open = true;
+  before = snapshot();
+  for (const code of ['Space', 'ArrowRight', 'ArrowLeft']) {
+    window.dispatch('keydown', { code, target: get('protein-catalog-close') });
+  }
+  assert.deepEqual(snapshot(), before, 'Open catalog suppresses all Matrix playback shortcuts');
+  get('protein-catalog-dialog').open = false;
+  window.dispatch('keydown', { code: 'ArrowRight' });
+  assert.equal(calls.stepForward, before.stepForward + 1, 'Closing catalog restores Matrix shortcuts');
+  console.log('[PASS] Catalog modal shortcut isolation and restoration');
 
   get('autoRunButton').click();
   assert.equal(timers.size, 1, 'Real AppState has an active scheduled interval');

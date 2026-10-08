@@ -451,6 +451,12 @@ function overlayCssRule(selector) {
   assert(rule, `Missing overlay rule: ${selector}`);
   return rule[1];
 }
+// Only adjacent collapsed Dotplot fields receive spacing; Matrix DP and display toggling stay untouched.
+const collapsedDotplotSpacing = overlayCssRule('.sidebar.close #dotplot-params-group > .sidebar-field-group + .sidebar-field-group');
+assert.strictEqual(collapsedDotplotSpacing.trim(), 'margin-top: 8px;',
+  'Collapsed Dotplot fields must use only an 8px sibling margin, without changing display or Matrix DP');
+console.log('  [PASS] Collapsed Dotplot sibling spacing is scoped and margin-only');
+
 const overlayLayout = overlayCssRule('.sidebar .dotplot-overlay-control');
 assert(/position:\s*relative;/.test(overlayLayout) && /width:\s*100%;/.test(overlayLayout),
   'Overlay label must contain its checkbox and fit the sidebar width');

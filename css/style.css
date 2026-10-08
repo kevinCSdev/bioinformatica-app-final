@@ -232,6 +232,10 @@ body.dark {
     width: 100%;
 }
 
+.sidebar.close #dotplot-params-group > .sidebar-field-group + .sidebar-field-group {
+    margin-top: 8px;
+}
+
 .sidebar-label,
 .field-label {
     font-size: 11px;
@@ -494,6 +498,20 @@ body.dark .sidebar li a:hover .text {
 .sidebar li.btn-active a .icon,
 .sidebar li.btn-active a .text {
     color: var(--sidebar-color);
+}
+
+/* Disabled anchors stay visibly dark gray, including hover and active parents. */
+.sidebar li a.control-bloqueado,
+.sidebar li a.control-bloqueado:hover {
+    background-color: #374151;
+    cursor: not-allowed;
+}
+
+.sidebar li a.control-bloqueado .icon,
+.sidebar li a.control-bloqueado .text,
+body.dark .sidebar li a.control-bloqueado:hover .icon,
+body.dark .sidebar li a.control-bloqueado:hover .text {
+    color: #e5e7eb;
 }
 
 /* Contenedor del deslizador de velocidad en la barra lateral */

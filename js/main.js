@@ -55,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Controles que dependen de una entrada válida (se bloquean si hay errores)
   const controlesDependientes = [btnPrev, btnNext, btnAutoRun, btnFinal, btnReset, btnExportCsv, btnExportPng];
+  const controlesEjecucion = [calculateButton, btnPrev, btnNext, btnAutoRun, btnFinal, btnReset];
   let entradaValida = true;
+  let activeView = 'matrix';
 
   const speedSlider = document.getElementById('speed-slider');
   const speedLabel = document.getElementById('speed-label');
@@ -237,12 +239,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function bloquearControles(bloquear) {
     entradaValida = !bloquear;
-    controlesDependientes.forEach(el => {
-      if (!el) return;
-      el.classList.toggle('control-bloqueado', bloquear);
-      el.setAttribute('aria-disabled', String(bloquear));
-    });
+    actualizarEstadoControles();
     if (matrixCard) matrixCard.classList.toggle('matriz-invalida', bloquear);
+  }
+
+  // Derive anchor availability from both view and validation, never from old CSS state.
+  function actualizarEstadoControles() {
+    const controles = new Set([calculateButton, ...controlesDependientes]);
+    controles.forEach(el => {
+      if (!el) return;
+      const bloqueado = (activeView === 'dotplot' && controlesEjecucion.includes(el)) ||
+        (!entradaValida && controlesDependientes.includes(el));
+      el.classList.toggle('control-bloqueado', bloqueado);
+      el.setAttribute('aria-disabled', String(bloqueado));
+      if (bloqueado) el.setAttribute('tabindex', '-1');
+      else el.removeAttribute('tabindex');
+    });
   }
 
   /**
@@ -391,36 +403,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   calculateButton.addEventListener('click', (e) => {
     e.preventDefault();
+    if (activeView === 'dotplot') return;
     reinitialize();
   });
 
   btnPrev.addEventListener('click', (e) => {
     e.preventDefault();
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     appState.stepBackward();
   });
 
   btnNext.addEventListener('click', (e) => {
     e.preventDefault();
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     appState.stepForward();
   });
 
   btnAutoRun.addEventListener('click', (e) => {
     e.preventDefault();
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     appState.toggleAutoRun();
   });
 
   btnFinal.addEventListener('click', (e) => {
     e.preventDefault();
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     appState.instantCompute();
   });
 
   btnReset.addEventListener('click', (e) => {
     e.preventDefault();
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     if (exampleSelect) exampleSelect.value = '';
     appState.reset();
   });
@@ -432,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Control de vistas (Matriz DP vs Dotplot)
-  let activeView = 'matrix';
 
   function renderDotplot() {
     if (!dotplotContainer) return;
@@ -460,6 +472,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function switchView(view) {
     activeView = view;
+    if (view === 'dotplot') appState.stopAutoRun();
+    actualizarEstadoControles();
     if (view === 'dotplot') {
       if (tabBtnDotplot) {
         tabBtnDotplot.classList.add('active');
@@ -587,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Atajos de teclado (Espacio: auto-ejecutar, Flecha Derecha: siguiente, Flecha Izquierda: anterior)
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-    if (!entradaValida) return;
+    if (activeView === 'dotplot' || !entradaValida) return;
     if (e.code === 'Space') {
       e.preventDefault();
       appState.toggleAutoRun();

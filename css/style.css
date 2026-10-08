@@ -50,6 +50,34 @@ body.dark {
     --text-color: #707070;
 }
 
+/* ===== Ayuda: vista de lectura, no pestaña del laboratorio ===== */
+[hidden] { display: none !important; }
+.help-view { color: #334155; max-width: 1060px; margin: 0 auto 32px; }
+.help-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.help-header h2 { color: #1e293b; margin-bottom: 8px; }
+.help-header button { flex-shrink: 0; padding: 10px 16px; border-radius: 8px; background: var(--card-bg); }
+.help-index { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 16px; margin-bottom: 20px; background: var(--card-bg); border-radius: 12px; }
+.help-index a { color: #4b3cc4; text-underline-offset: 3px; padding: 4px; }
+.help-sections { display: grid; gap: 16px; }
+.help-sections section { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 12px; padding: 24px; scroll-margin-top: 16px; }
+.help-sections h3 { color: #1e293b; margin-bottom: 12px; }
+.help-sections p, .help-sections dl, .help-sections ul, .help-sections ol { max-width: 78ch; line-height: 1.75; margin-bottom: 12px; }
+.help-sections dt { font-weight: 600; margin-top: 12px; }
+.help-sections dd { margin-top: 4px; }
+.help-sections ul, .help-sections ol { padding-left: 24px; }
+.help-sections li { margin-bottom: 6px; }
+.help-sections code { font-family: var(--font-mono); overflow-wrap: anywhere; }
+.help-sections table { border-collapse: collapse; margin: 12px 0; }
+.help-sections caption { text-align: left; margin-bottom: 8px; }
+.help-sections th, .help-sections td { border: 1px solid var(--border-color); padding: 8px 20px; text-align: center; }
+.help-view :focus-visible, #help-button:focus-visible { outline: 3px solid #4b3cc4; outline-offset: 4px; }
+@media (max-width: 640px) {
+    .help-header { flex-direction: column; }
+    .help-sections section { padding: 16px; }
+    .help-sections th, .help-sections td { padding: 8px 8px; }
+    .help-index { flex-direction: column; }
+}
+
 /* ===== Catálogo de aminoácidos (diálogo nativo) ===== */
 .protein-catalog-opener,
 .protein-catalog-close {

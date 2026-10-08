@@ -24,6 +24,19 @@ nombre o categoría, sin distinguir mayúsculas ni acentos. Usa **Cerrar** o
 **Escape** para volver al botón; cada apertura reinicia la búsqueda.
 El catálogo es de solo lectura y no cambia el alineamiento.
 
+## Ayuda y metodología
+
+Pulsa **Ayuda y metodología**, junto al catálogo, para consultar conceptos,
+los cuatro algoritmos, puntuación, un ejemplo NW de A/G, métricas y controles.
+El índice permite saltar a cada sección sin salir de la aplicación.
+**Volver al laboratorio** conserva entradas, matriz, resultados y pestaña,
+y devuelve el foco al botón de ayuda. Abrir la ayuda pausa la ejecución
+automática; volver no la reanuda. Los atajos de ejecución no actúan en la ayuda.
+
+La regresión determinista se ejecuta con `node tests/help-ui.spec.js` y también
+forma parte de `npm test`. Simula la presentación y usa el estado y motor reales;
+no sustituye la comprobación de navegación, foco y diseño en un navegador.
+
 ## Pruebas
 
 Requieren Node.js 18 o superior:

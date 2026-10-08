@@ -8,6 +8,7 @@ import { exportarCSV, exportarPNG } from './ui/Exportador.js';
 import { DotplotEngine } from './core/DotplotEngine.js';
 import { DotplotView } from './ui/DotplotView.js';
 import { ProteinCatalog } from './ui/ProteinCatalog.js';
+import { HelpPanel } from './ui/HelpPanel.js';
 
 /**
  * Inicialización principal de la aplicación y conexión con el DOM
@@ -77,6 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Instanciar los componentes principales
   const appState = new AppState();
+  const helpView = document.getElementById('help-view');
+  const helpPanel = helpView?.hidden === true ? new HelpPanel({
+    opener: document.getElementById('help-button'),
+    view: helpView,
+    workspace: document.getElementById('workspace-view'),
+    sidebar,
+    title: document.getElementById('help-title'),
+    returnButton: document.getElementById('help-return'),
+    pause: () => appState.stopAutoRun()
+  }) : null;
   const mathPanel = new MathPanel('#math-panel-container');
   const summaryPanel = new SummaryPanel('#summary-panel-container', {
     onPathChange: (index) => {
@@ -601,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Atajos de teclado (Espacio: auto-ejecutar, Flecha Derecha: siguiente, Flecha Izquierda: anterior)
   window.addEventListener('keydown', (e) => {
+    if (helpPanel?.active) return;
     if (catalogDialog.open) return;
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
     if (activeView === 'dotplot' || !entradaValida) return;

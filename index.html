@@ -256,10 +256,12 @@
       </div>
       <div class="badge-group">
         <button type="button" class="badge-tag primary protein-catalog-opener" id="protein-catalog-button" aria-haspopup="dialog" aria-controls="protein-catalog-dialog">Catálogo de aminoácidos</button>
+        <button type="button" class="badge-tag primary protein-catalog-opener" id="help-button" aria-controls="help-view" aria-expanded="false">Ayuda y metodología</button>
         <span class="badge-tag secondary" id="playback-status">Inicializado</span>
       </div>
     </div>
 
+    <div id="workspace-view">
     <!-- Avisos de validación de la entrada -->
     <div id="mensajes" role="alert" aria-live="polite"></div>
 
@@ -312,6 +314,138 @@
         </div>
       </div>
     </div>
+    </div>
+
+    <section id="help-view" class="help-view" aria-labelledby="help-title" hidden>
+      <div class="help-header">
+        <div>
+          <h2 id="help-title" tabindex="-1">Ayuda y metodología</h2>
+          <p>Comprende la comparación, sigue un cálculo y vuelve a tu trabajo sin perderlo.</p>
+        </div>
+        <button type="button" id="help-return" class="protein-catalog-close">Volver al laboratorio</button>
+      </div>
+      <nav class="help-index" aria-label="Índice de ayuda">
+        <a href="#help-concepts">1. Conceptos</a>
+        <a href="#help-algorithms">2. Algoritmos</a>
+        <a href="#help-scoring">3. Puntuación</a>
+        <a href="#help-example">4. Ejemplo</a>
+        <a href="#help-traceback">5. Camino y métricas</a>
+        <a href="#help-controls">6. Controles y exportación</a>
+        <a href="#help-dotplot">7. Dotplot</a>
+      </nav>
+      <div class="help-sections">
+        <section id="help-concepts" tabindex="-1">
+          <h3>1. ¿Qué estamos comparando?</h3>
+          <p>Una <strong>secuencia</strong> es una cadena de símbolos: bases de ADN/ARN o aminoácidos de una proteína.
+            Un <strong>alineamiento</strong> coloca dos cadenas en columnas para comparar sus posiciones.</p>
+          <p>Una <strong>coincidencia (match)</strong> tiene dos símbolos iguales; una <strong>discrepancia (mismatch)</strong>, distintos.
+            Un <strong>hueco (gap)</strong>, escrito «−» en esta explicación y «-» en los resultados, representa una inserción o eliminación (<strong>indel</strong>).</p>
+          <p>La <strong>programación dinámica</strong> resuelve comparaciones pequeñas y guarda sus resultados en una matriz.
+            Cada celda compara prefijos (los primeros símbolos): secuencia 1 en filas, secuencia 2 en columnas.
+            La fila y columna cero representan la cadena vacía.</p>
+          <p>Buscamos el mejor resultado <em>según el modelo elegido</em>; un puntaje alto no demuestra por sí solo parentesco biológico.</p>
+        </section>
+        <section id="help-algorithms" tabindex="-1">
+          <h3>2. Elige según tu pregunta</h3>
+          <dl>
+            <dt>NW · Needleman-Wunsch: comparar cadenas completas</dt>
+            <dd>Alineamiento global: maximiza el puntaje incluyendo extremos. Resultado: alineamiento y puntaje de la esquina inferior derecha.
+              Bordes: número de símbolos × penalización de hueco.</dd>
+            <dt>SW · Smith-Waterman: buscar un tramo parecido</dt>
+            <dd>Alineamiento local: maximiza el puntaje, pero permite empezar de nuevo con cero.
+              Bordes cero; resultado desde una celda de máximo puntaje hasta una celda cero. Si el máximo es cero, el alineamiento es vacío.</dd>
+            <dt>ED · Wagner-Fischer: medir cuánto cuesta transformar una cadena</dt>
+            <dd>Distancia de edición: minimiza costos de coincidencia, sustitución e indel.
+              Bordes: número de símbolos × costo indel. Resultado: costo mínimo en la esquina inferior derecha;
+              con costos habituales 0/1/1 equivale al mínimo número de ediciones.</dd>
+            <dt>LCS · Subsecuencia común más larga: conservar símbolos en orden</dt>
+            <dd>Una subsecuencia puede omitir símbolos, no cambiar su orden; no necesita ser un tramo continuo.
+              Bordes cero. Si los símbolos coinciden, suma 1 a la diagonal; si no, elige el mayor entre arriba e izquierda.
+              Resultado: longitud y cadena común. No usa los parámetros de puntuación.</dd>
+          </dl>
+          <p><strong>Cómo se calcula:</strong> diagonal compara dos símbolos; arriba consume uno de la secuencia 1 y deja hueco en la 2;
+            izquierda consume uno de la 2 y deja hueco en la 1.</p>
+          <p>Sea D la matriz, i la fila, j la columna, s el puntaje del par y g el del hueco:
+            NW usa <code>D(i,j) = max(D(i−1,j−1)+s, D(i−1,j)+g, D(i,j−1)+g)</code>.
+            SW añade 0 a esas opciones. ED usa el mínimo y reemplaza puntajes por costos.</p>
+        </section>
+        <section id="help-scoring" tabindex="-1">
+          <h3>3. Puntuación: qué premias y qué cuesta</h3>
+          <p>NW inicia con coincidencia +1, discrepancia −1 y hueco −2; SW con +2, −1 y −2.
+            Cada símbolo de hueco suma la misma penalización (no hay costo especial de apertura).</p>
+          <p>En ED los campos cambian a <strong>Costo Coincidencia</strong> (0), <strong>Costo Sustitución</strong> (1)
+            y <strong>Costo Indel</strong> (1): son costos no negativos, no premios. LCS desactiva los tres campos.</p>
+          <p><strong>BLOSUM62</strong> es una tabla de puntajes para pares de aminoácidos basada en sustituciones observadas en proteínas.
+            Solo se ofrece para NW y SW: sustituye los valores de coincidencia/discrepancia y desactiva esos campos.
+            El hueco sigue siendo ajustable; al seleccionar BLOSUM62 se coloca en −4.</p>
+          <p>El tipo de secuencia determina el alfabeto permitido. Usa hasta 20 símbolos por cadena;
+            consulta el catálogo para reconocer las letras de los aminoácidos. Cambiar algoritmo repone sus valores iniciales.</p>
+        </section>
+        <section id="help-example" tabindex="-1">
+          <h3>4. Un cálculo pequeño: A frente a G</h3>
+          <p>Elige NW con puntuación simple: coincidencia +1, discrepancia −1 y hueco −2.
+            Queremos comparar las cadenas completas, aunque sus símbolos difieran.</p>
+          <table>
+            <caption>Matriz NW: A en fila, G en columna; ∅ significa cadena vacía</caption>
+            <thead><tr><th scope="col">D</th><th scope="col">∅</th><th scope="col">G</th></tr></thead>
+            <tbody><tr><th scope="row">∅</th><td>0</td><td>−2</td></tr>
+              <tr><th scope="row">A</th><td>−2</td><td>−1</td></tr></tbody>
+          </table>
+          <p>Los dos bordes cuestan −2 porque comparar un símbolo con la cadena vacía requiere un hueco.</p>
+          <ul>
+            <li>Diagonal: 0 − 1 = −1 (A y G son distintos).</li>
+            <li>Arriba: −2 − 2 = −4 (agregar un hueco).</li>
+            <li>Izquierda: −2 − 2 = −4 (agregar un hueco).</li>
+          </ul>
+          <p>El máximo es <strong>−1</strong>. El camino vuelve por la diagonal: A alineada con G,
+            una discrepancia, cero huecos e identidad 0 %. Un óptimo también puede ser negativo.</p>
+        </section>
+        <section id="help-traceback" tabindex="-1">
+          <h3>5. Del puntaje al camino y sus métricas</h3>
+          <p><strong>Traceback</strong> significa reconstruir el alineamiento siguiendo hacia atrás las decisiones de la matriz.
+            NW, ED y LCS empiezan en la esquina inferior derecha y llegan al origen;
+            SW empieza en un máximo local y termina en cero.</p>
+          <p>En empates, el camino principal prioriza diagonal, arriba y luego izquierda.
+            Se muestran hasta 10 alternativas: en los algoritmos globales se exploran ramificaciones;
+            SW muestra un camino por celda máxima, no todas las ramificaciones posibles.</p>
+          <p><strong>Identidad</strong> = coincidencias / longitud del alineamiento × 100,
+            <strong>incluidas las columnas con huecos</strong> en el denominador. Se muestra con un decimal;
+            para alineamiento vacío es 0,0 %. No es el porcentaje de puntaje ni una medida de similitud BLOSUM62.</p>
+          <p>La longitud cuenta columnas; discrepancias cuenta pares distintos sin hueco; huecos cuenta columnas que contienen «-».
+            En SW estas métricas describen solo el tramo local. En LCS el puntaje es la longitud de la subsecuencia,
+            no la longitud del alineamiento con huecos.</p>
+        </section>
+        <section id="help-controls" tabindex="-1">
+          <h3>6. Explora y guarda tu resultado</h3>
+          <ol>
+            <li>Selecciona tipo, algoritmo y cadenas. Confirmar una entrada o cambiar parámetros reconstruye la matriz.
+              <strong>Inicializar</strong> también aplica la configuración actual; los errores se marcan antes de calcular.</li>
+            <li><strong>Siguiente / Anterior</strong> calcula o deshace una celda. <strong>Auto Ejecutar</strong> alterna ejecución y pausa;
+              Velocidad ajusta el intervalo. <strong>Calcular Final</strong> completa la matriz y el camino.</li>
+            <li>Haz clic en una celda calculada para ver las opciones de su cálculo; usa rueda para zoom y arrastra para desplazar.
+              El selector de caminos cambia la alternativa mostrada. <strong>Reiniciar</strong> borra cálculos, no tus cadenas.</li>
+          </ol>
+          <p>Fuera de campos y botones: Espacio alterna ejecución, flecha derecha avanza y flecha izquierda retrocede.
+            Ayuda pausa la ejecución, conserva entradas, resultados y pestaña, y bloquea estos atajos;
+            al volver debes reanudar manualmente.</p>
+          <p><strong>Exportar CSV</strong> guarda matriz y alineamientos disponibles; <strong>Exportar PNG</strong> guarda la vista actual
+            (matriz o Dotplot). Completa el cálculo si necesitas los alineamientos finales. Dotplot desactiva los controles de ejecución.</p>
+        </section>
+        <section id="help-dotplot" tabindex="-1">
+          <h3>7. Dotplot: ver patrones, no calcular un óptimo</h3>
+          <p>Un gráfico de puntos marca coincidencias entre posiciones. Una diagonal sugiere un tramo parecido;
+            repeticiones pueden producir varias diagonales. No mide significancia estadística ni demuestra homología.</p>
+          <p>La <strong>ventana</strong> compara un grupo centrado de símbolos en diagonal; el <strong>umbral</strong> es el mínimo
+            de coincidencias para dibujar un punto. Por defecto ambos son 1. El motor ajusta ventanas pares al siguiente impar
+            y limita el umbral entre 1 y el tamaño de ventana.</p>
+          <p>Solo se evalúan ventanas completas: con ventana mayor que 1 quedan bordes sin puntos;
+            si excede la longitud de una cadena, no habrá ventanas completas. Solo cuenta igualdad de letras,
+            no puntajes BLOSUM62 ni penalizaciones de hueco.</p>
+          <p>El trazo rojo superpone el camino ya calculado y seleccionado, si existe: no es un nuevo alineamiento generado por Dotplot.
+            Esta vista pausa la ejecución; vuelve a Matriz DP para continuar.</p>
+        </section>
+      </div>
+    </section>
   </section>
 
   <dialog id="protein-catalog-dialog" class="protein-catalog-dialog" aria-labelledby="protein-catalog-title">

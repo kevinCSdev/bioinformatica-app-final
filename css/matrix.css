@@ -1,0 +1,118 @@
+/* Estilos de la Matriz de Alineamiento SVG - Tema de color de la aplicación base */
+
+.alignment-matrix-svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  user-select: none;
+  touch-action: none;
+  background-color: #ffffff;
+}
+
+/* Encabezados de secuencia */
+.header-bg {
+  fill: #f1f5f9;
+  stroke: #cbd5e1;
+  stroke-width: 1px;
+}
+
+.header-text {
+  fill: #1e293b;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Celdas base de la matriz */
+.cell-rect {
+  fill: #ffffff;
+  stroke: #e2e8f0;
+  stroke-width: 1px;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+.matrix-cell:hover .cell-rect {
+  stroke: #695CFE;
+  stroke-width: 2px;
+  fill: #f6f5ff;
+}
+
+.cell-val {
+  fill: #475569;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* Celdas de borde / casos base (Fila 0 / Columna 0) */
+.boundary-cell .cell-rect {
+  fill: #f8fafc;
+  stroke: #e2e8f0;
+}
+
+.boundary-cell .cell-val {
+  fill: #64748b;
+  font-weight: 500;
+}
+
+/* Celdas internas ya calculadas */
+.computed-cell .cell-rect {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+}
+
+.computed-cell .cell-val {
+  fill: #0f172a;
+  font-weight: 700;
+}
+
+/* Celda activa resaltada - Rojo suave (#FFCCCC) como en scaleColor de la aplicación base */
+.active-cell .cell-rect {
+  fill: #FFCCCC !important;
+  stroke: #ef4444 !important;
+  stroke-width: 2.5px;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.4));
+}
+
+.active-cell .cell-val {
+  fill: #991b1b !important;
+  font-weight: 800;
+}
+
+/* Celdas del camino óptimo de traceback - Verde suave (#CCE6CC) como en scaleColor de la aplicación base */
+.path-cell .cell-rect {
+  fill: #CCE6CC !important;
+  stroke: #16a34a !important;
+  stroke-width: 2px;
+}
+
+.path-cell.active-cell .cell-rect {
+  fill: #fed7aa !important;
+  stroke: #ea580c !important;
+}
+
+.path-cell .cell-val {
+  fill: #166534 !important;
+  font-weight: 800;
+}
+
+/* Curva spline vectorial del traceback y marcadores */
+.traceback-spline {
+  fill: none;
+  stroke: #dc2626;
+  stroke-width: 3.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.5));
+  pointer-events: none;
+}
+
+.path-node {
+  fill: #dc2626;
+  stroke: #ffffff;
+  stroke-width: 2px;
+  pointer-events: none;
+}

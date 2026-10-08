@@ -1,0 +1,1462 @@
+{
+  "TC1: Identical Strings": {
+    "s1": "AGTC",
+    "s2": "AGTC",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "AGTC",
+      "s2": "AGTC",
+      "score": 4,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4,
+          -6,
+          -8
+        ],
+        [
+          -2,
+          1,
+          -1,
+          -3,
+          -5
+        ],
+        [
+          -4,
+          -1,
+          2,
+          0,
+          -2
+        ],
+        [
+          -6,
+          -3,
+          0,
+          3,
+          1
+        ],
+        [
+          -8,
+          -5,
+          -2,
+          1,
+          4
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGTC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGTC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "AGTC",
+      "s2": "AGTC",
+      "score": 8,
+      "max_cells": [
+        [
+          4,
+          4
+        ]
+      ],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          6,
+          4
+        ],
+        [
+          0,
+          0,
+          0,
+          4,
+          8
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGTC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGTC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "AGTC",
+      "s2": "AGTC",
+      "score": 0,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          1,
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          2,
+          1,
+          0,
+          1,
+          2
+        ],
+        [
+          3,
+          2,
+          1,
+          0,
+          1
+        ],
+        [
+          4,
+          3,
+          2,
+          1,
+          0
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGTC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGTC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "AGTC",
+      "s2": "AGTC",
+      "score": 4,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "lcs_string": "AGTC",
+      "all_lcs_strings": [
+        "AGTC"
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGTC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ]
+    }
+  },
+  "TC2: Single Mismatch (Substitution)": {
+    "s1": "AGTC",
+    "s2": "AGAC",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "AGTC",
+      "s2": "AGAC",
+      "score": 2,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4,
+          -6,
+          -8
+        ],
+        [
+          -2,
+          1,
+          -1,
+          -3,
+          -5
+        ],
+        [
+          -4,
+          -1,
+          2,
+          0,
+          -2
+        ],
+        [
+          -6,
+          -3,
+          0,
+          1,
+          -1
+        ],
+        [
+          -8,
+          -5,
+          -2,
+          -1,
+          2
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGAC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGAC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "AGTC",
+      "s2": "AGAC",
+      "score": 5,
+      "max_cells": [
+        [
+          4,
+          4
+        ]
+      ],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          5
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGAC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGAC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "AGTC",
+      "s2": "AGAC",
+      "score": 1,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          1,
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          2,
+          1,
+          0,
+          1,
+          2
+        ],
+        [
+          3,
+          2,
+          1,
+          1,
+          2
+        ],
+        [
+          4,
+          3,
+          2,
+          2,
+          1
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AGAC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AGAC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "AGTC",
+      "s2": "AGAC",
+      "score": 3,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          2,
+          3
+        ]
+      ],
+      "lcs_string": "AGC",
+      "all_lcs_strings": [
+        "AGC"
+      ],
+      "alignment_s1": "AG-TC",
+      "alignment_s2": "AGA-C",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "lateral",
+        "superior",
+        "diagonal"
+      ]
+    }
+  },
+  "TC3: Single Indel (Insertion/Deletion)": {
+    "s1": "AGTC",
+    "s2": "AGC",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "AGTC",
+      "s2": "AGC",
+      "score": 1,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4,
+          -6
+        ],
+        [
+          -2,
+          1,
+          -1,
+          -3
+        ],
+        [
+          -4,
+          -1,
+          2,
+          0
+        ],
+        [
+          -6,
+          -3,
+          0,
+          1
+        ],
+        [
+          -8,
+          -5,
+          -2,
+          1
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AG-C",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "superior",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AG-C"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "AGTC",
+      "s2": "AGC",
+      "score": 4,
+      "max_cells": [
+        [
+          2,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          2
+        ],
+        [
+          0,
+          0,
+          2,
+          3
+        ],
+        [
+          0,
+          0,
+          0,
+          4
+        ]
+      ],
+      "alignment_s1": "AG",
+      "alignment_s2": "AG",
+      "steps": [
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AG",
+          "AG"
+        ],
+        [
+          "AGTC",
+          "AG-C"
+        ]
+      ],
+      "optimal_path_count": 2
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "AGTC",
+      "s2": "AGC",
+      "score": 1,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          0,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          0,
+          1
+        ],
+        [
+          3,
+          2,
+          1,
+          1
+        ],
+        [
+          4,
+          3,
+          2,
+          1
+        ]
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AG-C",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "superior",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGTC",
+          "AG-C"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "AGTC",
+      "s2": "AGC",
+      "score": 3,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "lcs_string": "AGC",
+      "all_lcs_strings": [
+        "AGC"
+      ],
+      "alignment_s1": "AGTC",
+      "alignment_s2": "AG-C",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "superior",
+        "diagonal"
+      ]
+    }
+  },
+  "TC4: Highly Asymmetrical Lengths": {
+    "s1": "ACGTACGT",
+    "s2": "CG",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "ACGTACGT",
+      "s2": "CG",
+      "score": -10,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4
+        ],
+        [
+          -2,
+          -1,
+          -3
+        ],
+        [
+          -4,
+          -1,
+          -2
+        ],
+        [
+          -6,
+          -3,
+          0
+        ],
+        [
+          -8,
+          -5,
+          -2
+        ],
+        [
+          -10,
+          -7,
+          -4
+        ],
+        [
+          -12,
+          -9,
+          -6
+        ],
+        [
+          -14,
+          -11,
+          -8
+        ],
+        [
+          -16,
+          -13,
+          -10
+        ]
+      ],
+      "alignment_s1": "ACGTACGT",
+      "alignment_s2": "-----CG-",
+      "steps": [
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "diagonal",
+        "diagonal",
+        "superior"
+      ],
+      "all_optimal_paths": [
+        [
+          "ACGTACGT",
+          "-----CG-"
+        ],
+        [
+          "ACGTACGT",
+          "-C----G-"
+        ],
+        [
+          "ACGTACGT",
+          "-CG-----"
+        ]
+      ],
+      "optimal_path_count": 3
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "ACGTACGT",
+      "s2": "CG",
+      "score": 4,
+      "max_cells": [
+        [
+          3,
+          2
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          2
+        ]
+      ],
+      "alignment_s1": "CG",
+      "alignment_s2": "CG",
+      "steps": [
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "CG",
+          "CG"
+        ],
+        [
+          "CG",
+          "CG"
+        ]
+      ],
+      "optimal_path_count": 2
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "ACGTACGT",
+      "s2": "CG",
+      "score": 6,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          3,
+          2,
+          1
+        ],
+        [
+          4,
+          3,
+          2
+        ],
+        [
+          5,
+          4,
+          3
+        ],
+        [
+          6,
+          5,
+          4
+        ],
+        [
+          7,
+          6,
+          5
+        ],
+        [
+          8,
+          7,
+          6
+        ]
+      ],
+      "alignment_s1": "ACGTACGT",
+      "alignment_s2": "-----CG-",
+      "steps": [
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "diagonal",
+        "diagonal",
+        "superior"
+      ],
+      "all_optimal_paths": [
+        [
+          "ACGTACGT",
+          "-----CG-"
+        ],
+        [
+          "ACGTACGT",
+          "-C----G-"
+        ],
+        [
+          "ACGTACGT",
+          "-CG-----"
+        ]
+      ],
+      "optimal_path_count": 3
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "ACGTACGT",
+      "s2": "CG",
+      "score": 2,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "lcs_string": "CG",
+      "all_lcs_strings": [
+        "CG"
+      ],
+      "alignment_s1": "ACGTACGT",
+      "alignment_s2": "-----CG-",
+      "steps": [
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "superior",
+        "diagonal",
+        "diagonal",
+        "superior"
+      ]
+    }
+  },
+  "TC5: Completely Divergent": {
+    "s1": "AAAA",
+    "s2": "CCCC",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "AAAA",
+      "s2": "CCCC",
+      "score": -4,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4,
+          -6,
+          -8
+        ],
+        [
+          -2,
+          -1,
+          -3,
+          -5,
+          -7
+        ],
+        [
+          -4,
+          -3,
+          -2,
+          -4,
+          -6
+        ],
+        [
+          -6,
+          -5,
+          -4,
+          -3,
+          -5
+        ],
+        [
+          -8,
+          -7,
+          -6,
+          -5,
+          -4
+        ]
+      ],
+      "alignment_s1": "AAAA",
+      "alignment_s2": "CCCC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AAAA",
+          "CCCC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "AAAA",
+      "s2": "CCCC",
+      "score": 0,
+      "max_cells": [],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "alignment_s1": "",
+      "alignment_s2": "",
+      "steps": [],
+      "all_optimal_paths": [],
+      "optimal_path_count": 0
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "AAAA",
+      "s2": "CCCC",
+      "score": 4,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          1,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          4
+        ],
+        [
+          3,
+          3,
+          3,
+          3,
+          4
+        ],
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      ],
+      "alignment_s1": "AAAA",
+      "alignment_s2": "CCCC",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AAAA",
+          "CCCC"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "AAAA",
+      "s2": "CCCC",
+      "score": 0,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "lcs_string": "",
+      "all_lcs_strings": [
+        ""
+      ],
+      "alignment_s1": "----AAAA",
+      "alignment_s2": "CCCC----",
+      "steps": [
+        "lateral",
+        "lateral",
+        "lateral",
+        "lateral",
+        "superior",
+        "superior",
+        "superior",
+        "superior"
+      ]
+    }
+  },
+  "TC6: Multiple Optimal Paths (Tie-breaker)": {
+    "s1": "AGC",
+    "s2": "ACG",
+    "NW": {
+      "algorithm": "Needleman-Wunsch",
+      "s1": "AGC",
+      "s2": "ACG",
+      "score": -1,
+      "dp_matrix": [
+        [
+          0,
+          -2,
+          -4,
+          -6
+        ],
+        [
+          -2,
+          1,
+          -1,
+          -3
+        ],
+        [
+          -4,
+          -1,
+          0,
+          0
+        ],
+        [
+          -6,
+          -3,
+          0,
+          -1
+        ]
+      ],
+      "alignment_s1": "AGC",
+      "alignment_s2": "ACG",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGC",
+          "ACG"
+        ]
+      ],
+      "optimal_path_count": 1
+    },
+    "SW": {
+      "algorithm": "Smith-Waterman",
+      "s1": "AGC",
+      "s2": "ACG",
+      "score": 2,
+      "max_cells": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          2,
+          0
+        ]
+      ],
+      "alignment_s1": "A",
+      "alignment_s2": "A",
+      "steps": [
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "A",
+          "A"
+        ],
+        [
+          "G",
+          "G"
+        ],
+        [
+          "C",
+          "C"
+        ]
+      ],
+      "optimal_path_count": 3
+    },
+    "ED": {
+      "algorithm": "Wagner-Fischer (Edit Distance)",
+      "s1": "AGC",
+      "s2": "ACG",
+      "score": 2,
+      "dp_matrix": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          0,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          1,
+          1
+        ],
+        [
+          3,
+          2,
+          1,
+          2
+        ]
+      ],
+      "alignment_s1": "AGC",
+      "alignment_s2": "ACG",
+      "steps": [
+        "diagonal",
+        "diagonal",
+        "diagonal"
+      ],
+      "all_optimal_paths": [
+        [
+          "AGC",
+          "ACG"
+        ],
+        [
+          "A-GC",
+          "ACG-"
+        ],
+        [
+          "AGC-",
+          "A-CG"
+        ]
+      ],
+      "optimal_path_count": 3
+    },
+    "LCS": {
+      "algorithm": "Longest Common Subsequence (LCS)",
+      "s1": "AGC",
+      "s2": "ACG",
+      "score": 2,
+      "dp_matrix": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2,
+          2
+        ]
+      ],
+      "lcs_string": "AG",
+      "all_lcs_strings": [
+        "AC",
+        "AG"
+      ],
+      "alignment_s1": "A-GC",
+      "alignment_s2": "ACG-",
+      "steps": [
+        "diagonal",
+        "lateral",
+        "diagonal",
+        "superior"
+      ]
+    }
+  }
+}

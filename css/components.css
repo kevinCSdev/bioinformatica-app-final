@@ -1,0 +1,736 @@
+/* Hoja de estilos de componentes - Matriz de cálculo paso a paso y resumen */
+
+/* ===== Matriz de Cálculo Paso a Paso (Especificación exacta de App-08) ===== */
+.calculation-matrix-container {
+    background: #ffffff;
+    border: 4px solid #002B49;
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    min-width: 280px;
+    max-width: 360px;
+    margin: 10px auto;
+    color: #002B49;
+    box-shadow: 0 4px 12px rgba(0, 43, 73, 0.08);
+    box-sizing: border-box;
+}
+
+.calculation-matrix-container.boundary-info {
+    border: 3px solid #94a3b8;
+    border-radius: 16px;
+    padding: 14px 16px;
+    background: #f8fafc;
+}
+
+.boundary-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.boundary-body {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.matrix- {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: none;
+    width: 100%;
+}
+
+.matrix-[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Las filas con display: contents aseguran que las celdas (.matrix-cell) se alineen directamente a las columnas del grid */
+.matrix-row-header,
+.matrix-row-values,
+.matrix-row-scores,
+.matrix-row-results {
+    display: contents;
+}
+
+.calculation-matrix-container .matrix-cell {
+    background: #ffffff;
+    border: none;
+    border-right: 2px solid #002B49;
+    border-bottom: 2px solid #002B49;
+    border-radius: 0;
+    padding: 8px 4px;
+    text-align: center;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Eliminar el borde derecho en la última columna de cada fila */
+.matrix-row-header .matrix-cell:last-child,
+.matrix-row-values .matrix-cell:last-child,
+.matrix-row-scores .matrix-cell:last-child,
+.matrix-row-results .matrix-cell:last-child {
+    border-right: none;
+}
+
+/* Fila 1: Iconos de dirección */
+.matrix-row-header .matrix-cell {
+    background: #ffffff;
+    color: #002B49;
+    min-height: 50px;
+}
+
+.matrix-row-header .cell-icon {
+    font-size: 1.6rem;
+    color: #002B49;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.matrix-row-header .matrix-cell.reset-cell {
+    background: #ffffff;
+}
+
+.matrix-row-header .matrix-cell.reset-cell .cell-icon {
+    color: #002B49;
+}
+
+/* Fila 2: Etiquetas y valores de las celdas vecinas */
+.cell-label {
+    font-size: 0.72rem;
+    color: #3b5a75;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+    font-weight: 600;
+}
+
+.cell-value {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #002B49;
+    line-height: 1.1;
+}
+
+.cell-value.negative {
+    color: #b91c1c;
+}
+
+.cell-value.positive {
+    color: #002B49;
+}
+
+/* Fila 3: Operaciones y puntuaciones aplicadas */
+.cell-operation {
+    font-size: 1.15rem;
+    color: #002B49;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Fila 4: Candidatos y opción ganadora */
+.matrix-row-results .matrix-cell {
+    border-bottom: none;
+    min-height: 58px;
+}
+
+.matrix-row-results .cell-result {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #b91c1c;
+    line-height: 1.1;
+}
+
+.matrix-row-results .matrix-cell:not(.winner) .cell-result {
+    color: #b91c1c;
+}
+
+/* Resaltado de la celda ganadora */
+.calculation-matrix-container .matrix-cell.winner {
+    background: #52b355 !important;
+    color: #ffffff !important;
+}
+
+.calculation-matrix-container .matrix-cell.winner .cell-value,
+.calculation-matrix-container .matrix-cell.winner .cell-result,
+.calculation-matrix-container .matrix-cell.winner .cell-operation,
+.calculation-matrix-container .matrix-cell.winner .cell-label {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.calculation-matrix-container .matrix-cell.winner::after {
+    content: "✓";
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+}
+
+/* Placas y distribución del panel matemático */
+.math-panel-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.math-panel-cell-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.badge-cell {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.badge-score {
+    font-size: 12px;
+    font-weight: 700;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.katex-formula-container {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 8px;
+    overflow-x: auto;
+}
+
+.calculation-matrix-placeholder {
+    padding: 24px;
+    text-align: center;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.calculation-matrix-placeholder i {
+    font-size: 32px;
+}
+
+.calculation-matrix-placeholder p {
+    font-size: 13px;
+}
+
+/* ===== Panel de Resumen (Alineamiento Óptimo) ===== */
+.summary-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.summary-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.summary-title i {
+    color: var(--primary-color, #695cfe);
+    font-size: 1.25rem;
+}
+
+/* Navegación entre caminos */
+.path-navigation {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    padding: 3px 6px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-nav {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: var(--primary-color, #695cfe);
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.btn-nav:hover:not(:disabled) {
+    background: var(--primary-color, #695cfe);
+    color: #ffffff;
+    border-color: var(--primary-color, #695cfe);
+}
+
+.btn-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
+.path-indicator {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    padding: 0 4px;
+    user-select: none;
+}
+
+/* Cuadrícula de insignias de métricas */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+    gap: 8px;
+}
+
+.metric-badge {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.metric-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.metric-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 2px;
+}
+
+.metric-val {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.metric-score .metric-val {
+    color: #15803d;
+}
+
+.metric-identity .metric-val {
+    color: var(--primary-color, #695cfe);
+}
+
+.metric-matches .metric-val {
+    color: #0d9488;
+}
+
+.metric-mismatches .metric-val {
+    color: #d97706;
+}
+
+.metric-gaps .metric-val {
+    color: #e11d48;
+}
+
+.metric-length .metric-val {
+    color: #0284c7;
+}
+
+/* Barra de metadatos y controles de formato */
+.alignment-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.btn-toggle-view {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color, #695cfe);
+    background: #ffffff;
+    border: 1px solid var(--primary-color, #695cfe);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-toggle-view:hover {
+    background: var(--primary-color, #695cfe);
+    color: #ffffff;
+}
+
+.btn-toggle-view i {
+    font-size: 14px;
+}
+
+.condensed-notice {
+    font-size: 12px;
+    color: #0369a1;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Contenedor de texto del alineamiento */
+.alignment-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.alignment-display-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+    width: 100%;
+}
+
+/* Bloques de secuencia (Tarjetas con estilo de insignias de métrica) */
+.sequence-blocks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.sequence-block {
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-sizing: border-box;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sequence-block:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sequence-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sequence-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+/* Secuencia Horizontal (Seq 2) - Estilo de tarjeta de identidad */
+.sequence-block-horizontal {
+    background: #dbeafe;
+    border: 1.5px solid #93c5fd;
+    color: #1e40af;
+}
+
+.sequence-block-horizontal .badge-horizontal,
+.badge-horizontal {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.sequence-block-horizontal .sequence-chars {
+    color: #1e40af;
+}
+
+/* Secuencia Vertical (Seq 1) - Estilo de tarjeta de puntuación */
+.sequence-block-vertical {
+    background: #dcfce7;
+    border: 1.5px solid #86efac;
+    color: #166534;
+}
+
+.sequence-block-vertical .badge-vertical,
+.badge-vertical {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.sequence-block-vertical .sequence-chars {
+    color: #166534;
+}
+
+/* Bloque conector de correspondencia (Match / Indel) */
+.sequence-block-match {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-sizing: border-box;
+}
+
+.sequence-block-match .badge-match,
+.badge-match {
+    background: #64748b;
+    color: #ffffff;
+}
+
+.sequence-block-match .sequence-chars {
+    color: #334155;
+}
+
+/* Flujo de caracteres monoespaciados */
+.sequence-content {
+    overflow: visible;
+    padding: 2px 0;
+    line-height: 1;
+}
+
+.sequence-chars {
+    font-family: var(--font-mono, 'Courier New', Courier, monospace);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1.25;
+    white-space: pre;
+    display: inline-block;
+}
+
+/* Sección de alineamiento vertical copiable */
+.alignment-pure-vertical {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+.pure-vertical-header {
+    margin-bottom: 6px;
+}
+
+.pure-vertical-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.pure-vertical-title i {
+    color: var(--primary-color, #695cfe);
+    font-size: 13px;
+}
+
+.pure-vertical-code {
+    font-family: var(--font-mono, 'Courier New', Courier, monospace);
+    font-size: 13px;
+    line-height: 1.45;
+    letter-spacing: 0.12em;
+    color: #0f172a;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    margin: 0;
+    white-space: pre;
+    user-select: all;
+}
+
+.empty-alignment {
+    color: #94a3b8;
+    font-size: 13px;
+    font-style: italic;
+    text-align: center;
+    padding: 12px;
+}
+
+.summary-placeholder {
+    padding: 28px 16px;
+    text-align: center;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.summary-placeholder i {
+    font-size: 32px;
+    color: #cbd5e1;
+}
+
+.summary-placeholder span {
+    font-size: 13px;
+    max-width: 320px;
+    line-height: 1.4;
+}
+
+/* ===== Validación de entrada (aporte Cata-Anto) ===== */
+
+/* Marcado visual de los campos con entrada inválida */
+.campo-invalido {
+  outline: 2px solid #C0392B;
+  outline-offset: -2px;
+  background-color: #FDECEA !important;
+}
+
+#mensajes:empty {
+  display: none;
+}
+
+#mensajes {
+  margin-bottom: 16px;
+}
+
+.aviso-error {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background-color: var(--card-bg);
+  border: 1px solid #F0CFCA;
+  border-left: 5px solid #C0392B;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(90, 35, 28, 0.10);
+  padding: 18px 22px;
+}
+
+.aviso-icono {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #FDECEA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aviso-icono i {
+  font-size: 26px;
+  color: #C0392B;
+}
+
+.aviso-titulo {
+  margin: 0 0 10px 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #3D2724;
+}
+
+.aviso-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aviso-lista li {
+  position: relative;
+  padding: 8px 12px 8px 30px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  background-color: #FDF4F3;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5B3B36;
+}
+
+.aviso-lista li::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #C0392B;
+}
+
+.aviso-ayuda {
+  margin: 10px 0 0 0;
+  font-size: 13px;
+  color: var(--text-color);
+}
+
+/* Controles bloqueados mientras la entrada no es válida */
+.sidebar li a.control-bloqueado {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.matrix-card.matriz-invalida .matrix-canvas-wrapper {
+  opacity: 0.25;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+/* Parámetros deshabilitados (BLOSUM62 o LCS) */
+.stepper-input:disabled,
+.stepper-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

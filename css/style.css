@@ -1,0 +1,765 @@
+/* Importación de tipografías desde Google Fonts - Poppins y JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    /* ===== Paleta de colores base de la aplicación ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+    --card-bg: #FFFFFF;
+    --border-color: #CBD5E1;
+    --border-light: #E2E8F0;
+
+    /* ====== Transiciones suaves ====== */
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+
+    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+    overflow-x: hidden;
+}
+
+::selection {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+body.dark {
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+}
+
+/* ===== Barra lateral de navegación colapsable ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 280px;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.close {
+    width: 80px;
+}
+
+/* Encabezado y botón de alternancia de la barra lateral */
+.sidebar header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.sidebar .image-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar header .image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar header .image img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.sidebar header .logo-text {
+    display: flex;
+    flex-direction: column;
+    transition: var(--tran-03);
+    white-space: nowrap;
+}
+
+.sidebar.close header .logo-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.sidebar .profession {
+    font-size: 11px;
+    color: var(--text-color);
+    margin-top: -2px;
+}
+
+.sidebar header .toggle {
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: var(--tran-03);
+    box-shadow: 0 2px 6px rgba(105, 92, 254, 0.4);
+}
+
+.sidebar.close .toggle {
+    transform: translateY(-50%) rotate(0deg);
+}
+
+/* Contenido del menú de la barra lateral */
+.sidebar .menu-bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 10px;
+    padding-right: 18px;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.sidebar.close .menu-bar {
+    padding-right: 0;
+}
+
+.sidebar .menu-bar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar .menu-bar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar .menu-bar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+    transition: var(--tran-02);
+}
+
+.sidebar .menu-bar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.sidebar .menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar li {
+    height: 46px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .icon,
+.sidebar li .icon {
+    min-width: 52px;
+    border-radius: 6px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+
+.sidebar li .text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: var(--tran-03);
+    white-space: nowrap;
+}
+
+.sidebar.close li .text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Grupos de campos y etiquetas del formulario en la barra lateral */
+.sidebar-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.sidebar-label,
+.field-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    padding-left: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: var(--tran-03);
+    user-select: none;
+}
+
+.sidebar.close .sidebar-label,
+.sidebar.close .field-label {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    display: none;
+}
+
+/* Entradas de la barra lateral */
+.sidebar .search-box,
+.sidebar li.search-box {
+    height: 46px;
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    cursor: pointer;
+    transition: var(--tran-05);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sidebar .search-box input,
+.sidebar .search-box select,
+.sidebar li.search-box input,
+.sidebar li.search-box select {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: var(--primary-color-light);
+    color: #1e293b;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-right: 8px;
+    transition: var(--tran-05);
+    font-family: var(--font-mono);
+}
+
+.sidebar .search-box select,
+.sidebar li.search-box select {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.sidebar.close .search-box input,
+.sidebar.close .search-box select,
+.sidebar.close li.search-box input,
+.sidebar.close li.search-box select {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Controles de incremento/decremento (stepper) para parámetros de puntuación */
+.stepper-controls {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+    padding-right: 6px;
+    gap: 6px;
+}
+
+.sidebar.close .stepper-controls {
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.stepper-input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-family: var(--font-mono) !important;
+    padding: 0 4px !important;
+}
+
+/* Ocultar flechas numéricas nativas de los navegadores */
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.stepper-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Botones personalizados de incremento y decremento (+ / -) */
+.stepper-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--primary-color);
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: var(--tran-02);
+    user-select: none;
+    line-height: 1;
+}
+
+.stepper-btn:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(105, 92, 254, 0.4);
+}
+
+.stepper-btn:active {
+    transform: scale(0.92);
+}
+
+.stepper-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+}
+
+/* Enlaces y botones de acción */
+.sidebar li a {
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--tran-03);
+    cursor: pointer;
+}
+
+.sidebar li a:hover {
+    background-color: var(--primary-color);
+}
+
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+    color: var(--sidebar-color);
+}
+
+/* Ajuste de contraste: en modo oscuro preserva texto blanco al pasar el cursor */
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+    color: var(--sidebar-color);
+}
+
+/* Estado activo del botón */
+.sidebar li.btn-active a {
+    background-color: var(--primary-color);
+}
+.sidebar li.btn-active a .icon,
+.sidebar li.btn-active a .text {
+    color: var(--sidebar-color);
+}
+
+/* Contenedor del deslizador de velocidad en la barra lateral */
+.sidebar-speed {
+    padding: 6px 12px;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    margin: 4px 0;
+    transition: var(--tran-03);
+}
+
+.sidebar.close .sidebar-speed {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.sidebar-speed-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 2px;
+}
+
+.sidebar-speed input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* Selector de modo (Global vs Local) */
+.sidebar .bottom-content {
+    border-top: 1px solid var(--border-light);
+    padding-top: 10px;
+}
+
+.sidebar li.mode {
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    position: relative;
+    transition: var(--tran-05);
+}
+
+.sidebar.close li.mode .mode-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .mode .sun-moon {
+    height: 50px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .mode-text {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.mode .sun-moon i {
+    position: absolute;
+}
+
+.mode .sun-moon i.sun {
+    opacity: 0;
+}
+
+body.dark .mode .sun-moon i.sun {
+    opacity: 1;
+}
+
+body.dark .mode .sun-moon i.moon {
+    opacity: 0;
+}
+
+.sidebar .toggle-switch {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sidebar .switch {
+    position: relative;
+    height: 22px;
+    width: 40px;
+    border-radius: 25px;
+    background-color: var(--toggle-color);
+    transition: var(--tran-05);
+}
+
+.switch::before {
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    background-color: var(--sidebar-color);
+    transition: var(--tran-04);
+}
+
+body.dark .switch::before {
+    left: 20px;
+    background-color: var(--primary-color);
+}
+
+/* ===== Área Principal de Contenido (.home) ===== */
+.home {
+    position: relative;
+    min-height: 100vh;
+    left: 280px;
+    width: calc(100% - 280px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+    padding: 24px 32px;
+}
+
+.sidebar.close ~ .home {
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Encabezado superior de bienvenida */
+.home-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background: var(--sidebar-color);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.home-banner .title-area h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.home-banner .title-area p {
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.home-banner .badge-group {
+    display: flex;
+    gap: 10px;
+}
+
+.badge-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-tag.primary {
+    background: var(--primary-color-light);
+    color: var(--primary-color);
+}
+
+.badge-tag.secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* Espacio de trabajo limpio en dos columnas */
+.workspace-container {
+    display: grid;
+    grid-template-columns: minmax(500px, 1.4fr) minmax(360px, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 1180px) {
+    .workspace-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tarjeta del visor de la matriz */
+.matrix-card {
+    background: var(--sidebar-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 540px;
+}
+
+.matrix-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-light);
+    gap: 16px;
+}
+
+.matrix-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.matrix-instructions {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.4;
+    padding: 4px 10px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+}
+
+.matrix-canvas-wrapper {
+    width: 100%;
+    height: 520px;
+    min-height: 480px;
+    max-height: 600px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Columna de paneles laterales de detalle (Inspector y Alineamiento) */
+.detail-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-card {
+    background: var(--sidebar-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    padding: 18px 20px;
+}
+
+.panel-card-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Barra de accesos rápidos a ejemplos canónicos */
+.presets-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.preset-chip {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--primary-color-light);
+    color: var(--primary-color);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--tran-02);
+}
+
+.preset-chip:hover {
+    background: var(--primary-color);
+    color: #FFF;
+}
+
+/* Pestañas de alternancia de visualización (Matriz DP vs Dotplot) */
+.view-tabs-container {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 8px;
+    gap: 4px;
+}
+
+.view-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.view-tab-btn:hover {
+    color: #1e293b;
+}
+
+.view-tab-btn.active {
+    background: #ffffff;
+    color: var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dotlet-canvas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}

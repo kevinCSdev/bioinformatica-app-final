@@ -1,6 +1,7 @@
 import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -479,6 +480,83 @@ assert(/outline:\s*2px solid/.test(overlayCssRule('.sidebar .dotplot-overlay-con
 assert(mainJs.includes("dotplotOverlayToggle.addEventListener('change'"),
   'Existing native checkbox change binding must remain intact');
 console.log('  [PASS] Overlay semantic label, stable name, collapsed containment, checked and focus styles verified');
+
+// 11. Execute entry-point callback wiring with presentation stubs, without a browser.
+console.log('\n--- Section 11: Click-only Cell Inspection & Playback ---');
+const inspectionUpdates = [];
+let emptyRenders = 0;
+let rendererOptions;
+let stateListener;
+const inspectedDetails = { i: 1, j: 2, score: 3 };
+const lookupCoordinates = [];
+const inspectionState = {
+  algorithm: AlgorithmType.NEEDLEMAN_WUNSCH,
+  scoring: { match: 1, mismatch: -1, gap: -2 },
+  optimalPaths: [],
+  engine: {
+    getCellDetails(i, j) {
+      lookupCoordinates.push([i, j]);
+      return i === 1 && j === 2 ? inspectedDetails : null;
+    }
+  },
+  subscribe(listener) { stateListener = listener; },
+  getFlatMatrix() { return []; },
+  getActivePathCoordinates() { return []; }
+};
+const inspectionPanel = {
+  update(...args) { inspectionUpdates.push(args); },
+  renderEmpty() { emptyRenders++; }
+};
+const rendererWiring = mainJs.slice(mainJs.indexOf('  const renderer = new D3Renderer('),
+  mainJs.indexOf('  const algoDisplayNames ='));
+const subscriptionWiring = mainJs.slice(mainJs.indexOf('  appState.subscribe('),
+  mainJs.indexOf('  // Escuchadores de eventos para entradas de secuencia'));
+assert(rendererWiring && subscriptionWiring, 'Entry-point callback wiring must be available');
+vm.runInNewContext(`${rendererWiring}\n${subscriptionWiring}`, {
+  appState: inspectionState,
+  mathPanel: inspectionPanel,
+  D3Renderer: class {
+    constructor(selector, options) { rendererOptions = options; }
+    updateMatrixCells() {}
+    clearTraceback() {}
+    renderTracebackArrow() {}
+  },
+  summaryPanel: { renderEmpty() {}, render() {} },
+  playbackStatus: {}, activeAlgoBadge: {}, algoDisplayNames: {}, activeView: 'matrix'
+});
+const calculatedCell = { i: 1, j: 2, calculated: true };
+rendererOptions.onCellHover?.(calculatedCell);
+assert.strictEqual(inspectionUpdates.length, 0, 'Hover must not update the calculation breakdown');
+assert.strictEqual(lookupCoordinates.length, 0, 'Hover must not look up cell details');
+rendererOptions.onCellClick(calculatedCell);
+assert.deepStrictEqual(lookupCoordinates, [[1, 2]], 'Click must look up the clicked coordinates');
+assert.deepStrictEqual(inspectionUpdates[0],
+  [inspectedDetails, inspectionState.algorithm, inspectionState.scoring]);
+for (const cell of [null, { i: 1, j: 2, calculated: false }]) {
+  rendererOptions.onCellClick(cell);
+}
+assert.strictEqual(lookupCoordinates.length, 1, 'Uncalculated and absent cells must not be inspected');
+rendererOptions.onCellClick({ i: 9, j: 9, calculated: true });
+assert.strictEqual(inspectionUpdates.length, 1, 'Missing details must leave the panel unchanged');
+const savedEngine = inspectionState.engine;
+inspectionState.engine = null;
+rendererOptions.onCellClick(calculatedCell);
+assert.strictEqual(inspectionUpdates.length, 1, 'Missing engine must leave the panel unchanged');
+inspectionState.engine = savedEngine;
+for (const eventType of ['STEP_FORWARD', 'STEP_BACKWARD', 'COMPLETE', 'INSTANT_COMPLETE']) {
+  rendererOptions.onCellClick(calculatedCell);
+  const activeDetails = { i: 2, j: 2, eventType };
+  stateListener(inspectionState, eventType, { activeCell: { details: activeDetails } });
+  assert.strictEqual(inspectionUpdates.at(-1)[0], activeDetails,
+    `${eventType} must replace clicked inspection with the active step`);
+}
+const activeWithoutDetails = { i: 2, j: 1 };
+stateListener(inspectionState, 'STEP_FORWARD', { activeCell: activeWithoutDetails });
+assert.strictEqual(inspectionUpdates.at(-1)[0], activeWithoutDetails, 'Playback must retain its active-cell fallback');
+stateListener(inspectionState, 'STEP_BACKWARD', { activeCell: null });
+stateListener(inspectionState, 'RESET', {});
+assert.strictEqual(emptyRenders, 2, 'Backward to no active cell and reset must clear the panel');
+console.log('  [PASS] Hover no-op, guarded cell clicks, playback/completion overrides, and reset verified');
 
 console.log('\nAll UI Redesign, Sidebar Form Controls, and Spanish Normalization invariants validated successfully!');
 

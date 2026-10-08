@@ -85,14 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const renderer = new D3Renderer('#matrix-canvas-container', {
-    onCellHover: (cell) => {
-      if (cell && cell.calculated && appState.engine) {
-        const details = appState.engine.getCellDetails(cell.i, cell.j);
-        if (details) {
-          mathPanel.update(details, appState.algorithm, appState.scoring);
-        }
-      }
-    },
     onCellClick: (cell) => {
       if (cell && cell.calculated && appState.engine) {
         const details = appState.engine.getCellDetails(cell.i, cell.j);

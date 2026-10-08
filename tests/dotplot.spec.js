@@ -182,8 +182,8 @@ console.log('=== [TDD: Dotplot Engine Spec (ODD + TDD)] ===\n');
 
   DotplotView.render(mockContainer, largeSeqDotlet);
   assert(appendedCanvas, 'Debe adjuntar un canvas al contenedor');
-  assert.strictEqual(appendedCanvas.style.maxWidth, '100%', 'Canvas debe tener maxWidth 100%');
-  assert.strictEqual(appendedCanvas.style.maxHeight, '100%', 'Canvas debe tener maxHeight 100%');
+  assert.strictEqual(appendedCanvas.style.maxWidth, 'none', 'Canvas should not shrink readable labels');
+  assert.strictEqual(appendedCanvas.style.maxHeight, 'none', 'Canvas should not distort square cells');
   assert.strictEqual(appendedCanvas.style.objectFit, 'contain', 'Canvas debe tener objectFit contain');
 
   // La altura del canvas calculado en píxeles debe adaptarse para caber dentro del contenedor de 520px
@@ -208,6 +208,83 @@ console.log('=== [TDD: Dotplot Engine Spec (ODD + TDD)] ===\n');
     'El encabezado de la tarjeta .matrix-card-header debe tener margin-bottom de al menos 24px para separar las instrucciones del recuadro'
   );
   console.log('  [PASS] Separación (.matrix-card-header margin-bottom >= 24px) verificada');
+}
+
+// 10. Renderer sizing: use the limiting dimension, retain square cells and readable labels.
+{
+  const { DotplotView } = await import('../js/ui/DotplotView.js');
+  const originalDocument = globalThis.document;
+  const originalWindow = globalThis.window;
+  const texts = [];
+  const lines = [];
+  const arcs = [];
+  let canvas;
+  const context = {
+    scale() {}, fillRect() {}, beginPath() {}, stroke() {}, fill() {},
+    moveTo(x, y) { lines.push(['move', x, y]); },
+    lineTo(x, y) { lines.push(['line', x, y]); },
+    arc(x, y, radius) { arcs.push({ x, y, radius }); },
+    fillText(text, x, y) { texts.push({ text, x, y, font: this.font }); },
+    measureText(text) { return { width: String(text).length * 6 }; }
+  };
+  const container = {
+    clientWidth: 900, clientHeight: 600, innerHTML: '',
+    appendChild(child) { canvas = child; }
+  };
+  globalThis.document = {
+    createElement() { return { style: {}, getContext() { return context; } }; }
+  };
+  globalThis.window = { devicePixelRatio: 2 };
+  function draw(rows, cols) {
+    texts.length = lines.length = arcs.length = 0;
+    DotplotView.render(container, {
+      seq1: 'A'.repeat(rows), seq2: 'C'.repeat(cols),
+      dots: Array.from({ length: rows }, (_, i) =>
+        Array.from({ length: cols }, (_, j) => i === 0 && j === 0))
+    }, { overlayPath: [[1, 1], [rows, cols]] });
+    const horizontal = texts.filter(call => call.text === 'C');
+    const vertical = texts.filter(call => call.text === 'A');
+    const cell = horizontal[1].x - horizontal[0].x;
+    assert.strictEqual(vertical[1].y - vertical[0].y, cell, 'Grid cells stay square');
+    assert.strictEqual(arcs[0].x, horizontal[0].x, 'Dots align with column centers');
+    assert.strictEqual(arcs[0].y, vertical[0].y, 'Dots align with row centers');
+    assert(lines.some(call => call[0] === 'line' &&
+      call[1] === horizontal.at(-1).x && call[2] === vertical.at(-1).y),
+    'Overlay ends at the final cell center');
+    assert(horizontal.every(call => call.font.includes('13px')), 'Labels retain readable font size');
+    assert.strictEqual(canvas.width, parseFloat(canvas.style.width) * 2, 'DPR preserves CSS geometry');
+    return cell;
+  }
+  try {
+    const largeCell = draw(4, 4);
+    assert(largeCell > 100, `Short sequences should fill available space, not cap at 48px (got ${largeCell})`);
+    assert(Math.abs(parseFloat(canvas.style.height) - container.clientHeight) < 1,
+      'Height-limited plot uses the available height');
+    assert(parseFloat(canvas.style.width) <= container.clientWidth, 'Plot fits available width');
+
+    container.clientWidth = 360;
+    container.clientHeight = 280;
+    const smallCell = draw(4, 4);
+    assert(smallCell < largeCell, 'Resizing recomputes cell size');
+    assert(Math.abs(parseFloat(canvas.style.height) - container.clientHeight) < 1,
+      'Resized plot still fills its limiting dimension');
+
+    container.clientWidth = 701;
+    container.clientHeight = 521;
+    draw(3, 11);
+    assert(Math.abs(parseFloat(canvas.style.width) - container.clientWidth) < 1,
+      'Rectangular sequences fill the width when width-limited');
+    assert(parseFloat(canvas.style.height) <= container.clientHeight, 'Rectangular grid fits height');
+
+    const denseCell = draw(100, 100);
+    assert(denseCell >= 16, 'Dense sequences preserve readable label spacing');
+    assert.strictEqual(canvas.style.maxWidth, 'none', 'Dense plots are not downscaled into unreadable labels');
+    assert.strictEqual(canvas.style.maxHeight, 'none', 'Dense plots preserve square geometry without downscaling');
+    console.log('  [PASS] Renderer fills resized containers with square cells and readable dense-grid labels');
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.window = originalWindow;
+  }
 }
 
 console.log('\nDotplot Engine & View tests PASSED!\n');

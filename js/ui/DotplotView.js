@@ -33,37 +33,37 @@ export class DotplotView {
     const containerH = el.clientHeight || 520;
 
     const paddingLeft = 55;
-    const paddingTop = 55;
-    const paddingRight = 25;
-    const paddingBottom = 25;
+    const paddingTop = 40;
+    const paddingRight = 8;
+    const paddingBottom = 8;
 
-    // Calcular tamaño de celda para que quepa exactamente dentro del contenedor
-    const availW = Math.max(120, containerW - paddingLeft - paddingRight);
-    const availH = Math.max(120, containerH - paddingTop - paddingBottom);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const fitCellW = Math.floor(availW / m);
-    const fitCellH = Math.floor(availH / n);
-
-    const cellSize = options.cellSize || Math.max(12, Math.min(48, Math.min(fitCellW, fitCellH)));
+    // Fit square cells to the limiting dimension; scroll instead of shrinking labels.
+    ctx.font = '10px monospace';
+    const minCellSize = Math.max(16, Math.ceil(ctx.measureText(String(m)).width) + 4);
+    const availW = Math.max(0, containerW - paddingLeft - paddingRight);
+    const availH = Math.max(0, containerH - paddingTop - paddingBottom);
+    const cellSize = options.cellSize || Math.max(minCellSize, Math.min(availW / m, availH / n));
     const width = paddingLeft + m * cellSize + paddingRight;
     const height = paddingTop + n * cellSize + paddingBottom;
 
-    const canvas = document.createElement('canvas');
     const dpr = (typeof globalThis.window !== 'undefined' && globalThis.window.devicePixelRatio) ? globalThis.window.devicePixelRatio : 1;
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     canvas.style = canvas.style || {};
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
-    canvas.style.maxWidth = '100%';
-    canvas.style.maxHeight = '100%';
+    canvas.style.maxWidth = 'none';
+    canvas.style.maxHeight = 'none';
+    canvas.style.flex = 'none';
     canvas.style.objectFit = 'contain';
     canvas.style.display = 'block';
     canvas.style.margin = 'auto';
     canvas.className = 'dotlet-canvas';
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
     ctx.scale(dpr, dpr);
 
     // Fondo blanco

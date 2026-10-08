@@ -672,6 +672,14 @@ body.dark .switch::before {
     justify-content: center;
 }
 
+/* Keep dense Dotplots readable without shrinking the canvas. */
+#dotplot-canvas-container {
+    box-sizing: border-box;
+    overflow: auto;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
 /* Columna de paneles laterales de detalle (Inspector y Alineamiento) */
 .detail-column {
     display: flex;

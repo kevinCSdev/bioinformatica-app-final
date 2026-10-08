@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Unified Biological Sequence Alignment Web App",
   "scripts": {
-    "test": "node tests/engine.spec.js && node tests/state.spec.js && node tests/ui-redesign.spec.js && node tests/blosum.spec.js && node tests/validacion.spec.js && node tests/oraculo/oraculo.spec.cjs && node tests/oracle-migration.spec.js && node tests/dotplot.spec.js && node tests/dotplot-controls.spec.js",
+    "test": "node tests/engine.spec.js && node tests/state.spec.js && node tests/ui-redesign.spec.js && node tests/blosum.spec.js && node tests/validacion.spec.js && node tests/oraculo/oraculo.spec.cjs && node tests/oracle-migration.spec.js && node tests/dotplot.spec.js && node tests/dotplot-controls.spec.js && node tests/protein-catalog.spec.js",
     "generate:oraculo": "node tests/oraculo/test_suite_alignment.js"
   }
 }
